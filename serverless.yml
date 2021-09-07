@@ -5,30 +5,31 @@ frameworkVersion: ">=1.4.0 <2.0.0"
 provider:
   name: aws
   runtime: java8
-  region: eu-west-1
-  stage: dev
-  profile: core
+  region: eu-central-1
+#  region: us-east-1
+  stage: prod
+  profile: default
   cfLogs: true
-  timeout: 40
+  timeout: 30
   environment:
     stage: ${self:custom.stage}
 
 plugins:
-  - serverless-domain-manager
+#  - serverless-domain-manager
   - serverless-apigw-binary
   - serverless-apigwy-binary
 
 custom:
   stage: ${opt:stage, self:provider.stage}
-  domains:
-    plantuml: plant-aws.diagrams.net
-    dev: plant-aws-dev.diagrams.net
-  customDomain:
-    domainName: ${self:custom.domains.${self:custom.stage}}
-    certificateName: plant-aws-dev.diagrams.net
-    basePath: ''
-    stage: "${self:custom.stage}"
-    createRoute53Record: true
+#  domains:
+#    plantuml: plant-aws.diagrams.net
+#    dev: plant-aws-dev.diagrams.net
+#  customDomain:
+#    domainName: ${self:custom.domains.${self:custom.stage}}
+#    certificateName: plant-aws-dev.diagrams.net
+#    basePath: ''
+#    stage: "${self:custom.stage}"
+#    createRoute53Record: true
   apigwBinary:
     types:
       - '*/*'

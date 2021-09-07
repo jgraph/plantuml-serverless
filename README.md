@@ -52,3 +52,9 @@ You can deploy with Serverless framework or AWS SAM. Also note that if you just 
 
 - Edit `sam-deploy.sh` to replace the deployment bucket with your own.
 - Run `sam-deploy.sh`
+
+### JGraph deployment
+
+- Set the region in the `serverless.yml` file, then deploy using `sls deploy`
+- Ensure gateway urls are the same and matches the ones used in region CF worker
+- Ensure the gateway custom domain (plant-aws.diagrams.net) API mapping is correct. Currently, it points to `prod-plantuml-serverless` - `prod` in `eu-central-1` region
