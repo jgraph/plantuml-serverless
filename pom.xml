@@ -33,7 +33,7 @@
     <dependency>
       <groupId>net.sourceforge.plantuml</groupId>
       <artifactId>plantuml</artifactId>
-      <version>1.2021.10-DRAWIO</version>
+      <version>1.2022.0</version>
     </dependency>
     <!-- Math dependencies -->
     <dependency>
