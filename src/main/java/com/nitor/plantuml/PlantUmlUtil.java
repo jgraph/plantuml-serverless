@@ -13,7 +13,6 @@ import net.sourceforge.plantuml.servlet.utility.UmlExtractor;
 import net.sourceforge.plantuml.syntax.SyntaxChecker;
 import net.sourceforge.plantuml.syntax.SyntaxResult;
 import net.sourceforge.plantuml.BlockUml;
-import net.sourceforge.plantuml.FileFormatOption;
 import net.sourceforge.plantuml.core.Diagram;
 import net.sourceforge.plantuml.error.PSystemError;
 import org.apache.log4j.Logger;
@@ -22,7 +21,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 
 public class PlantUmlUtil {
 
@@ -46,7 +44,7 @@ public class PlantUmlUtil {
     String uml = decodeUml(encodedUml);
     SourceStringReader reader = new SourceStringReader(uml);
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    return reader.generateImage(baos, new FileFormatOption(FileFormat.PNG, true));
+    return reader.outputImage(baos, new FileFormatOption(FileFormat.PNG, true)).getDescription();
   }
 
   public SyntaxCheckResult checkSyntax(String encodedUml) throws IOException {

@@ -7,13 +7,11 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 import java.awt.*;
 import java.io.*;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.nio.file.attribute.PosixFilePermissions;
 import java.util.Base64;
@@ -110,6 +108,7 @@ class LambdaBase {
     sendJSONResponse(outputStream, base64Response, statusCodeException.getStatusCode());
   }
 
+  @SuppressWarnings("unchecked")
   void sendJSONResponse(OutputStream outputStream, String base64Response, String statusCode) throws IOException {
     JSONObject responseJson = new JSONObject();
 
@@ -125,6 +124,7 @@ class LambdaBase {
     internalSendResponse(outputStream, responseJson);
   }
 
+  @SuppressWarnings("unchecked")
   void sendHTMLResponse(OutputStream outputStream, String htmlResponse, String statusCode) throws IOException {
     JSONObject responseJson = new JSONObject();
 
@@ -140,6 +140,7 @@ class LambdaBase {
     internalSendResponse(outputStream, responseJson);
   }
 
+  @SuppressWarnings("unchecked")
   void sendRedirectResponse(OutputStream outputStream, String redirectPath) throws IOException {
     JSONObject responseJson = new JSONObject();
 
