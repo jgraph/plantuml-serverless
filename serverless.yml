@@ -20,6 +20,9 @@ provider:
       lambdacontainer:
         path: ./
         file: lambdacontainer/Dockerfile
+  apiGateway:
+      binaryMediaTypes:
+        - '*/*'
 
 plugins:
 #  - serverless-certificate-creator

@@ -66,3 +66,4 @@ The SAM deployment doesn't include custom domains currently.
 - Set the region in the `serverless.yml` file, then deploy using `sls deploy`
 - Ensure gateway urls are the same and matches the ones used in region CF worker
 - Ensure the gateway custom domain (plant-aws.diagrams.net) API mapping is correct. Currently, it points to `prod-plantuml-serverless` - `prod` in `eu-central-1` region
+- You can edit the domain manually also from (API Gateway -> Custom domain names) and set the new stack name (API Mapping)
