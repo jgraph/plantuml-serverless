@@ -4,9 +4,21 @@ Description: PlantUML Serverless API
 
 Globals:
   Function:
-    Runtime: java8
     Timeout: 30
     MemorySize: 1024
+
+Metadata:
+  AWS::ServerlessRepo::Application:
+    Name: plantuml-render
+    Description: PlantUML Serverless API and UI
+    Author: mmajis
+    SpdxLicenseId: GPL-3.0-only
+    LicenseUrl: s3://plantuml-serverlessrepo/LICENSE
+    ReadmeUrl: s3://plantuml-serverlessrepo/README.md
+    Labels: ['plantuml']
+    HomePageUrl: https://github.com/mmajis/plantuml-serverless
+    SemanticVersion: 0.1.1
+    SourceCodeUrl: https://github.com/mmajis/plantuml-serverless/releases/tag/v0.1.1
 
 Resources:
   PlantUMLAPI:
@@ -27,6 +39,16 @@ Resources:
                       statusCode: 200
                   uri:
                     Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${UIFunction.Arn}/invocations"
+                  httpMethod: POST
+                  type: aws_proxy
+            "/uml/{encodedUml}":
+              get:
+                x-amazon-apigateway-integration:
+                  responses:
+                    default:
+                      statusCode: 200
+                  uri:
+                    Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${UmlFunction.Arn}/invocations"
                   httpMethod: POST
                   type: aws_proxy
             "/png/{encodedUml}":
@@ -100,10 +122,10 @@ Resources:
   UIFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: com.nitor.plantuml.lambda.UIHandler::handleRequest
-      CodeUri: !Ref paramCodeUri
       Timeout: 30
-      CodeUri: target/plantuml-serverless-0.0.7-DRAWIO.jar
+      PackageType: Image
+      ImageConfig:
+        Command: [ "com.nitor.plantuml.lambda.UIHandler::handleRequest" ]
       Events:
         GetResource:
           Type: Api
@@ -111,14 +133,37 @@ Resources:
             Path: /
             Method: get
             RestApiId: !Ref PlantUMLAPI
+    Metadata:
+      DockerTag: lambdacontainer-sam
+      DockerContext: ./
+      Dockerfile: lambdacontainer/Dockerfile
+
+  UmlFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Timeout: 30
+      PackageType: Image
+      ImageConfig:
+        Command: [ "com.nitor.plantuml.lambda.UmlHandler::handleRequest" ]
+      Events:
+        GetResource:
+          Type: Api
+          Properties:
+            Path: /uml/{encodedUml}
+            Method: get
+            RestApiId: !Ref PlantUMLAPI
+    Metadata:
+      DockerTag: lambdacontainer-sam
+      DockerContext: ./
+      Dockerfile: lambdacontainer/Dockerfile
 
   PngFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: com.nitor.plantuml.lambda.PngHandler::handleRequest
-      CodeUri: !Ref paramCodeUri
       Timeout: 30
-      CodeUri: target/plantuml-serverless-0.0.7-DRAWIO.jar
+      PackageType: Image
+      ImageConfig:
+        Command: [ "com.nitor.plantuml.lambda.PngHandler::handleRequest" ]
       Events:
         GetResource:
           Type: Api
@@ -126,13 +171,18 @@ Resources:
             Path: /png/{encodedUml}
             Method: get
             RestApiId: !Ref PlantUMLAPI
+    Metadata:
+      DockerTag: lambdacontainer-sam
+      DockerContext: ./
+      Dockerfile: lambdacontainer/Dockerfile
 
   ImgFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: com.nitor.plantuml.lambda.PngHandler::handleRequest
       Timeout: 30
-      CodeUri: target/plantuml-serverless-0.0.7-DRAWIO.jar
+      PackageType: Image
+      ImageConfig:
+        Command: [ "com.nitor.plantuml.lambda.PngHandler::handleRequest" ]
       Events:
         GetResource:
           Type: Api
@@ -140,13 +190,18 @@ Resources:
             Path: /img/{encodedUml}
             Method: get
             RestApiId: !Ref PlantUMLAPI
+    Metadata:
+      DockerTag: lambdacontainer-sam
+      DockerContext: ./
+      Dockerfile: lambdacontainer/Dockerfile
 
   SvgFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: com.nitor.plantuml.lambda.SvgHandler::handleRequest
       Timeout: 30
-      CodeUri: target/plantuml-serverless-0.0.7-DRAWIO.jar
+      PackageType: Image
+      ImageConfig:
+        Command: [ "com.nitor.plantuml.lambda.SvgHandler::handleRequest" ]
       Events:
         GetResource:
           Type: Api
@@ -154,13 +209,18 @@ Resources:
             Path: /svg/{encodedUml}
             Method: get
             RestApiId: !Ref PlantUMLAPI
+    Metadata:
+      DockerTag: lambdacontainer-sam
+      DockerContext: ./
+      Dockerfile: lambdacontainer/Dockerfile
 
   TxtFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: com.nitor.plantuml.lambda.TxtHandler::handleRequest
       Timeout: 30
-      CodeUri: target/plantuml-serverless-0.0.7-DRAWIO.jar
+      PackageType: Image
+      ImageConfig:
+        Command: [ "com.nitor.plantuml.lambda.TxtHandler::handleRequest" ]
       Events:
         GetResource:
           Type: Api
@@ -168,13 +228,18 @@ Resources:
             Path: /txt/{encodedUml}
             Method: get
             RestApiId: !Ref PlantUMLAPI
-
+    Metadata:
+      DockerTag: lambdacontainer-sam
+      DockerContext: ./
+      Dockerfile: lambdacontainer/Dockerfile
+            
   MapFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: com.nitor.plantuml.lambda.MapHandler::handleRequest
       Timeout: 30
-      CodeUri: target/plantuml-serverless-0.0.7-DRAWIO.jar
+      PackageType: Image
+      ImageConfig:
+        Command: [ "com.nitor.plantuml.lambda.MapHandler::handleRequest" ]
       Events:
         GetResource:
           Type: Api
@@ -182,13 +247,18 @@ Resources:
             Path: /map/{encodedUml}
             Method: get
             RestApiId: !Ref PlantUMLAPI
+    Metadata:
+      DockerTag: lambdacontainer-sam
+      DockerContext: ./
+      Dockerfile: lambdacontainer/Dockerfile
 
   SyntaxFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: com.nitor.plantuml.lambda.SyntaxHandler::handleRequest
       Timeout: 30
-      CodeUri: target/plantuml-serverless-0.0.7-DRAWIO.jar
+      PackageType: Image
+      ImageConfig:
+        Command: [ "com.nitor.plantuml.lambda.SyntaxHandler::handleRequest" ]
       Events:
         GetResource:
           Type: Api
@@ -196,6 +266,10 @@ Resources:
             Path: /check/{encodedUml}
             Method: get
             RestApiId: !Ref PlantUMLAPI
+    Metadata:
+      DockerTag: lambdacontainer-sam
+      DockerContext: ./
+      Dockerfile: lambdacontainer/Dockerfile
 
 Outputs:
   ApiUrl:
