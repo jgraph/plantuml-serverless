@@ -3,7 +3,8 @@ package com.nitor.plantuml.lambda;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
 import org.apache.http.HttpStatus;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.json.simple.JSONObject;
 
 import java.io.*;
@@ -11,7 +12,7 @@ import java.util.stream.Stream;
 
 public class UIHandler extends LambdaBase implements RequestStreamHandler  {
 
-  private static final Logger logger = Logger.getLogger(UIHandler.class);
+  private static final Logger logger = LoggerFactory.getLogger(UIHandler.class);
   private static final String CONTENT_CLASSPATH = "/ui/index.html";
 
   @Override

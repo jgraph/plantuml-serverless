@@ -34,14 +34,14 @@ public class SvgHandler extends LambdaBase implements RequestStreamHandler {
             ByteArrayOutputStream baos = plantUmlUtil.renderDiagram(reader, DiagramType.IMAGE_SVG_XML);
             byte[] bytes = baos.toByteArray();
             String base64Response = Base64.getEncoder().encodeToString(bytes);
-            SyntaxCheckResult syntaxCheckResult = plantUmlUtil.checkSyntax(encodedUml);
-            if (!syntaxCheckResult.isError()) {
+           // SyntaxCheckResult syntaxCheckResult = plantUmlUtil.checkSyntax(encodedUml);
+           // if (!syntaxCheckResult.isError()) {
                 sendOKDiagramResponse(outputStream, base64Response, DiagramType.IMAGE_SVG_XML,
                         getCacheHeaders(etag, DEFAULT_MAX_AGE));
-            } else {
+         /*   } else {
                 sendDiagramResponse(outputStream, base64Response,
                         DiagramType.IMAGE_SVG_XML, String.valueOf(HttpStatus.SC_UNPROCESSABLE_ENTITY));
-            }
+            }*/
         } catch (StatusCodeException sce) {
             sendExceptionResponse(outputStream, sce);
         }

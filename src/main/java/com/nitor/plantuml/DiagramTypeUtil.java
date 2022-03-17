@@ -2,11 +2,12 @@ package com.nitor.plantuml;
 
 import com.nitor.plantuml.lambda.DiagramType;
 import net.sourceforge.plantuml.FileFormat;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 class DiagramTypeUtil {
 
-  private static Logger logger = Logger.getLogger(DiagramTypeUtil.class);
+  private static Logger logger = LoggerFactory.getLogger(DiagramTypeUtil.class);
 
   static FileFormat asFileFormat(DiagramType diagramType) {
     switch (diagramType) {

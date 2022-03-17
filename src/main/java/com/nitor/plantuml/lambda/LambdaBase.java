@@ -2,9 +2,8 @@ package com.nitor.plantuml.lambda;
 
 import com.nitor.plantuml.lambda.exception.StatusCodeException;
 import org.apache.http.HttpStatus;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
@@ -32,15 +31,15 @@ class LambdaBase {
     private static final String DOT_PATH = "/opt/dot_static";
     static final long DEFAULT_MAX_AGE = 3600;
 
-    private static final Logger logger = Logger.getLogger(LambdaBase.class);
+    private static final Logger logger = LoggerFactory.getLogger(LambdaBase.class);
 
     static {
-        String stage = Optional.ofNullable(System.getenv(ENV_VAR_KEY_STAGE)).orElse(DEFAULT_STAGE);
+        /*String stage = Optional.ofNullable(System.getenv(ENV_VAR_KEY_STAGE)).orElse(DEFAULT_STAGE);
         URL logPropsUrl = LambdaBase.class.getResource(String.format("/log4j-%s.properties", stage));
         if (logPropsUrl != null) {
             LogManager.resetConfiguration();
             PropertyConfigurator.configure(logPropsUrl);
-        }
+        }*/
 
         if (System.getenv(LAMBDA_TASK_ROOT) == null) {
             logger.error(String.format("%s environment variable is not set. Rendering without graphviz dot!", LAMBDA_TASK_ROOT));

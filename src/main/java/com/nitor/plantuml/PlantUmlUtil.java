@@ -14,7 +14,8 @@ import net.sourceforge.plantuml.servlet.utility.UmlExtractor;
 import net.sourceforge.plantuml.syntax.SyntaxChecker;
 import net.sourceforge.plantuml.syntax.SyntaxResult;
 import net.sourceforge.plantuml.version.Version;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -26,7 +27,7 @@ import java.util.regex.Pattern;
 
 public class PlantUmlUtil {
 
-  private static final Logger logger = Logger.getLogger(PlantUmlUtil.class);
+  private static final Logger logger = LoggerFactory.getLogger(PlantUmlUtil.class);
   public static final String DIAGRAM_TYPE_UNKNOWN = "UNKNOWN";
   public static final String NOETAG = "NOETAG";
 

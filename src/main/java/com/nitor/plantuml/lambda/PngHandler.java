@@ -5,8 +5,8 @@ import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
 import com.nitor.plantuml.PlantUmlUtil;
 import com.nitor.plantuml.lambda.exception.StatusCodeException;
 import net.sourceforge.plantuml.SourceStringReader;
-import org.apache.http.HttpStatus;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.json.simple.JSONObject;
 
 import java.io.ByteArrayOutputStream;
@@ -24,7 +24,7 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 public class PngHandler extends LambdaBase implements RequestStreamHandler {
-    private static final Logger logger = Logger.getLogger(PngHandler.class);
+    private static final Logger logger = LoggerFactory.getLogger(PngHandler.class);
     private static final String TYPE_IDENTIFIER = "png";
     private final PlantUmlUtil plantUmlUtil = new PlantUmlUtil();
 
@@ -46,14 +46,14 @@ public class PngHandler extends LambdaBase implements RequestStreamHandler {
             }
             byte[] bytes = baos.toByteArray();
             String base64Response = Base64.getEncoder().encodeToString(bytes);
-            SyntaxCheckResult syntaxCheckResult = plantUmlUtil.checkSyntax(encodedUml);
-            if (!syntaxCheckResult.isError()) {
+         //   SyntaxCheckResult syntaxCheckResult = plantUmlUtil.checkSyntax(encodedUml);
+          //  if (!syntaxCheckResult.isError()) {
                 sendOKDiagramResponse(outputStream, base64Response, DiagramType.IMAGE_PNG,
                         getCacheHeaders(etag, DEFAULT_MAX_AGE));
-            } else {
+          /*  } else {
                 sendDiagramResponse(outputStream, base64Response, DiagramType.IMAGE_PNG,
                         String.valueOf(HttpStatus.SC_UNPROCESSABLE_ENTITY));
-            }
+            }*/
         } catch (StatusCodeException sce) {
             sendExceptionResponse(outputStream, sce);
         }
