@@ -24,125 +24,28 @@ provider:
       binaryMediaTypes:
         - '*/*'
 
-plugins:
-#  - serverless-certificate-creator
-#  - serverless-domain-manager
-
 custom:
   stage: ${opt:stage, self:provider.stage}
-#  domains:
-#    plantuml: plant-aws.diagrams.net
-#    dev: plant-aws-dev.diagrams.net
-#  customCertificate:
-#    certificateName: ${self:custom.domains.${self:custom.stage}}
-#    idempotencyToken: "plantumlserverless"
-#    hostedZoneIds: "Z2N6543C2MYFH4"
-#    region: us-east-1 # us-east-1 required for edge type CloudFront endpoint
-#    # optional, default false. this is useful if you managed to delete your certificate but the dns validation records still exist
-#    rewriteRecords: true
-#  customDomain:
-#    domainName: ${self:custom.domains.${self:custom.stage}}
-#    certificateName: ${self:custom.domains.${self:custom.stage}}
-#    basePath: ''
-#    stage: "${self:custom.stage}"
-#    createRoute53Record: true
-#    endpointType: edge
 
 functions:
-  ui:
-    events:
-      - http:
-          path: /
-          method: get
-          integration: lambda-proxy
-          cors: true
-    image:
-      name: lambdacontainer
-      command:
-        - com.nitor.plantuml.lambda.UIHandler::handleRequest
-  uml:
-    events:
-      - http:
-          path: uml/{encodedUml}
-          method: get
-          integration: lambda-proxy
-          cors: true
-    image:
-      name: lambdacontainer
-      command:
-        - com.nitor.plantuml.lambda.UmlHandler::handleRequest
   png:
-    events:
-      - http:
-          path: png/{encodedUml}
-          method: get
-          integration: lambda-proxy
-          cors: true
-          response:
-            contentHandling: CONVERT_TO_BINARY
-    image:
-      name: lambdacontainer
-      command:
-        - com.nitor.plantuml.lambda.PngHandler::handleRequest
-  img:
-    events:
-      - http:
-          path: img/{encodedUml}
-          method: get
-          integration: lambda-proxy
-          cors: true
-          response:
-            contentHandling: CONVERT_TO_BINARY
+    url: true
     image:
       name: lambdacontainer
       command:
         - com.nitor.plantuml.lambda.PngHandler::handleRequest
   svg:
-    events:
-      - http:
-          path: svg/{encodedUml}
-          method: get
-          integration: lambda-proxy
-          cors: true
+    url: true
     image:
       name: lambdacontainer
       command:
         - com.nitor.plantuml.lambda.SvgHandler::handleRequest
   txt:
-    events:
-      - http:
-          path: txt/{encodedUml}
-          method: get
-          integration: lambda-proxy
-          cors: true
+    url: true
     image:
       name: lambdacontainer
       command:
         - com.nitor.plantuml.lambda.TxtHandler::handleRequest
-  map:
-    events:
-      - http:
-          path: map/{encodedUml}
-          method: get
-          integration: lambda-proxy
-          cors: true
-          response:
-            contentHandling: CONVERT_TO_BINARY
-    image:
-      name: lambdacontainer
-      command:
-        - com.nitor.plantuml.lambda.MapHandler::handleRequest
-  check:
-    events:
-      - http:
-          path: check/{encodedUml}
-          method: get
-          integration: lambda-proxy
-          cors: true
-    image:
-      name: lambdacontainer
-      command:
-        - com.nitor.plantuml.lambda.SyntaxHandler::handleRequest
 
 resources:
   Description: PlantUML Serverless

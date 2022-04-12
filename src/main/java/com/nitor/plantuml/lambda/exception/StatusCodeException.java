@@ -14,5 +14,5 @@ public abstract class StatusCodeException extends RuntimeException {
     super(message, cause);
   }
 
-  public abstract String getStatusCode();
+  public abstract int getStatusCode();
 }

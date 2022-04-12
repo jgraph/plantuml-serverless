@@ -2,7 +2,7 @@ package com.nitor.plantuml.lambda.exception;
 
 public class BadRequestException extends StatusCodeException {
 
-  private final static String STATUS_CODE = "400";
+  private final static int STATUS_CODE = 400;
 
   public BadRequestException() {
     super();
@@ -16,7 +16,7 @@ public class BadRequestException extends StatusCodeException {
     super(message, cause);
   }
 
-  public String getStatusCode() {
+  public int getStatusCode() {
     return STATUS_CODE;
   }
 }

@@ -1,18 +1,12 @@
 package com.nitor.plantuml;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.nitor.plantuml.lambda.DiagramType;
-import com.nitor.plantuml.lambda.SyntaxCheckResult;
 import com.nitor.plantuml.lambda.exception.BadRequestException;
 import net.sourceforge.plantuml.FileFormat;
 import net.sourceforge.plantuml.FileFormatOption;
-import net.sourceforge.plantuml.LineLocation;
 import net.sourceforge.plantuml.SourceStringReader;
 import net.sourceforge.plantuml.code.AsciiEncoder;
 import net.sourceforge.plantuml.servlet.utility.UmlExtractor;
-import net.sourceforge.plantuml.syntax.SyntaxChecker;
-import net.sourceforge.plantuml.syntax.SyntaxResult;
 import net.sourceforge.plantuml.version.Version;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,8 +15,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.regex.Pattern;
 
 public class PlantUmlUtil {
@@ -65,25 +57,6 @@ public class PlantUmlUtil {
     return reader.outputImage(baos, new FileFormatOption(FileFormat.PNG, true)).getDescription();
   }
 
-  public SyntaxCheckResult checkSyntax(String encodedUml) throws IOException {
-    String uml = decodeUml(encodedUml);
-    SyntaxResult syntaxResult = SyntaxChecker.checkSyntax(uml);
-    if (logger.isDebugEnabled()) {
-      Gson gson = new GsonBuilder().create();
-      String json = gson.toJson(syntaxResult);
-      logger.debug(json);
-    }
-    String diagramType = syntaxResult.getUmlDiagramType() != null ? syntaxResult.getUmlDiagramType().name() : DIAGRAM_TYPE_UNKNOWN;
-    LineLocation lineLoc = syntaxResult.getLineLocation();
-    int lineLocationPos = -1;
-    if (lineLoc != null) {
-      lineLocationPos = lineLoc.getPosition();
-    }
-    SyntaxCheckResult result = new SyntaxCheckResult(syntaxResult.isError(), diagramType,
-        String.valueOf(lineLocationPos), new ArrayList<String>(syntaxResult.getErrors()));
-    return result;
-  }
-
   public String decodeUml(String encodedUml) {
     logger.debug(String.format("Got encoded uml: %s", encodedUml));
     try {
@@ -97,11 +70,7 @@ public class PlantUmlUtil {
       logger.debug(String.format("Decoded uml: %s", decodedUml));
       return decodedUml;
     } catch (IllegalArgumentException iae) {
-      SyntaxCheckResult result = new SyntaxCheckResult(true, DIAGRAM_TYPE_UNKNOWN, "0",
-          Arrays.asList(String.format("Could not decode UML from request path: %s", encodedUml)));
-      Gson gson = new GsonBuilder().create();
-      String json = gson.toJson(result);
-      throw new BadRequestException(json, iae);
+      throw new BadRequestException(String.format("Could not decode UML from request path: %s", encodedUml), iae);
     }
   }
 
