@@ -16,6 +16,8 @@ RUN yum install -y fontconfig && yum clean all
 COPY --from=dotbuild /var/task/build/graphviz-2.42.3/cmd/dot/dot_static /opt/dot_static
 COPY target/classes ${LAMBDA_TASK_ROOT}
 COPY target/dependency/* ${LAMBDA_TASK_ROOT}/lib/
+COPY fonts/* ${LAMBDA_TASK_ROOT}/fonts/
 
+ENV FONTCONFIG_PATH=/var/task/fonts
 # Set the CMD to your handler (could also be done as a parameter override outside of the Dockerfile)
 #CMD [ "com.example.LambdaHandler::handleRequest" ]
