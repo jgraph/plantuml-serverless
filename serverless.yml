@@ -7,6 +7,7 @@ provider:
   name: aws
   region: eu-central-1
 #  region: us-east-1
+#  region: ap-southeast-2
   stage: prod
   profile: default
   timeout: 30
