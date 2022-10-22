@@ -17,12 +17,16 @@ jobs:
       AWS_REGION: ${{ matrix.region }}
     steps:
     - name: Checkout reposistory
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         ref: 'release'
     - name: Build
       run: |
         npm ci
+        mkdir /root/.m2
+        echo -e '<?xml version="1.0"?>\n<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0\nhttp://maven.apache.org/xsd/settings-1.0.0.xsd"><activeProfiles><activeProfile>github</activeProfile></activeProfiles><profiles><profile><id>github</id><repositories><repository><id>github</id><name>GitHub JGraph Apache Maven Packages</name><url>https://maven.pkg.github.com/jgraph/plantuml</url></repository></repositories></profile></profiles><servers><server><id>github</id><username>USERNAME_HERE</username><password>TOKEN_HERE</password></server></servers></settings>' > /root/.m2/settings.xml
+        sed -i "s/USERNAME_HERE/${{secrets.GH_PKG_USERNAME}}/g" /root/.m2/settings.xml
+        sed -i "s/TOKEN_HERE/${{secrets.GH_PKG_ACCESS_KEY}}/g" /root/.m2/settings.xml
         mvn clean package
     - name: Deploy
       uses: serverless/github-action@v3.1
