@@ -1,0 +1,9 @@
+# Building the image
+
+1. Build the image ```docker build . -t jgraph/drawio-plant-builder:latest -t jgraph/drawio-plant-builder:`date '+%Y-%m-%d'` ```
+2. Login to docker hub if needed `echo "${DOCKER_PASS}" | docker login -u "${DOCKER_USER}" --password-stdin;`      
+3. Push the image `docker image push --all-tags jgraph/drawio-plant-builder`
+
+# Using the image
+
+This image has the required software to build draw.io plantUml serverless. It is used by the Github action.
