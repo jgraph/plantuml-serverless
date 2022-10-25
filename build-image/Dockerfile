@@ -11,9 +11,13 @@ RUN yum update -y && \
 
 RUN curl --silent --location https://rpm.nodesource.com/setup_14.x | bash - && \
     yum install nodejs -y
-# Install docker
-RUN amazon-linux-extras install docker -y
-# Copy maven settings.xml
+
+# Install docker and serverless
+RUN amazon-linux-extras install docker -y && \
+    npm install -g serverless
+
+# Copy maven settings.xml and aws credentials files
 COPY settings.xml /root/.m2/settings.xml
+COPY credentials /root/.aws/credentials
 
 CMD ["bash"]
