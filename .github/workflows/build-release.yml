@@ -8,9 +8,12 @@ on:
 jobs:
   container:
     runs-on: ubuntu-latest
+    container:
+      image: 'jgraph/drawio-plant-builder:latest'
+      options: --privileged -e container=docker -v /sys/fs/cgroup:/sys/fs/cgroup
     strategy:
       matrix:
-        region: ["ap-southeast-2"] # "us-east-1", "eu-central-1"
+        region: ["ap-southeast-2", "us-east-1", "eu-central-1"]
     env:
       AWS_REGION: ${{ matrix.region }}
     steps:
@@ -18,19 +21,6 @@ jobs:
       uses: actions/checkout@v3
       with:
         ref: 'release'
-    - uses: actions/setup-node@v2
-      with:
-        node-version: "14"
-    - run: npm i -g serverless
-    - name: configure aws credentials
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ${{ matrix.region }}
-    - uses: actions/setup-java@v1
-      with:
-        java-version: 11
     - name: Build
       run: |
         npm ci
@@ -39,8 +29,10 @@ jobs:
         mvn package -Dmaven.test.skip=true
     - name: Deploy
       run: |
+        mkdir -p ~/.aws
+        echo -e "[default]\naws_access_key_id=${{secrets.AWS_ACCESS_KEY_ID}}\naws_secret_access_key=${{secrets.AWS_SECRET_ACCESS_KEY}}" > ~/.aws/credentials
         sls deploy
       env:
+        AWS_REGION: ${{ matrix.region }}
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        AWS_REGION: ${{ matrix.region }}
