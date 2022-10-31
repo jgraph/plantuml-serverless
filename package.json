@@ -4,7 +4,7 @@
   "description": "Render PlantUML diagrams",
   "main": "index.js",
   "dependencies": {
-    "serverless": "^3.12.0"
+    "serverless": "^3.23.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
