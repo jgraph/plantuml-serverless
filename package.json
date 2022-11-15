@@ -3,7 +3,7 @@
   "version": "0.0.7-DRAWIO",
   "description": "Render PlantUML diagrams",
   "main": "index.js",
-  "dependencies": {
+  "devDependencies": {
     "serverless": "^3.23.0"
   },
   "scripts": {
