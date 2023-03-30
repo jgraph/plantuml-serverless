@@ -5,13 +5,13 @@
   <groupId>com.nitor</groupId>
   <artifactId>plantuml-serverless</artifactId>
   <packaging>jar</packaging>
-  <version>0.3.1-DRAWIO</version>
+  <version>0.3.2-DRAWIO</version>
   <name>PlantUML Serverless API</name>
 
   <properties>
     <maven.compiler.source>11</maven.compiler.source>
     <maven.compiler.target>11</maven.compiler.target>
-    <plantuml.version>1.2022.6-DRAWIO</plantuml.version>
+    <plantuml.version>1.2023.5-DRAWIO</plantuml.version>
   </properties>
 
   <dependencies>
@@ -70,7 +70,7 @@
     <dependency>
       <groupId>org.apache.xmlgraphics</groupId>
       <artifactId>batik-all</artifactId>
-      <version>1.15</version>
+      <version>1.16</version>
     </dependency>
     <!-- https://mvnrepository.com/artifact/org.apache.cxf/cxf-rt-frontend-jaxrs -->
     <dependency>
@@ -111,6 +111,18 @@
             </goals>
             <configuration/>
           </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.owasp</groupId>
+        <artifactId>dependency-check-maven</artifactId>
+        <version>8.2.1</version>
+        <executions>
+            <execution>
+                <goals>
+                    <goal>check</goal>
+                </goals>
+            </execution>
         </executions>
       </plugin>
     </plugins>
