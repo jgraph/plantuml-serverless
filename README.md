@@ -2,6 +2,25 @@
 
 A serverless UI + API to render [PlantUML](http://plantuml.com) diagrams.
 
+## NOTE Feburary 2026 update
+
+There are ongoing maintainance issues with this project. The security of the app isn't a problem, due to the way we invocation isolate it in AWS lambda. The functionality issues are:
+
+- PlantUML version is dated: v1.2023.10 is over 2 years old.
+- Java 11 EOL: Running on Java 11 (Amazon Corretto), which is approaching end of extended support.
+- Node.js 14 in build image: build-image/Dockerfile installs Node 14, which has been EOL since April 2023.
+- Network include are blocked: !include https://..., !include_once, !include_many with HTTP URLs are detected by regex in PlantUmlUtil.java:33-34 and have caching disabled (return NOETAG). Local file includes won't work either — Lambda's filesystem is read-only/sandboxed
+- Fonts are severely limited:
+    Only unifont-14.0.03.ttf is bundled (a minimal Unicode bitmap font)
+    No DejaVu, Liberation, monospace families, or any other typefaces
+    Standard server has 10+ font families
+- Only PNG, SVG, TXT are implemented, no PDF, EPS, Base64, VDXL, XMI, SCXML, or LaTeX output
+- No image map generation
+- Outdated graphviz, 2.42.3, from 2019.
+- Doesn't support Stdlib (C4, AWS Icons, etc.)
+
+Rather than updating, the most likely route forward is a direct PlantUML to draw.io convertor in JS. See https://github.com/jgraph/plantuml-converter
+
 ## Drop in replacement for official PlantUML server
 
 This can be used as a drop in replacement for scenarios
