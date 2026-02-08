@@ -1,6 +1,6 @@
 FROM amazoncorretto:11
 
-LABEL maintainer="JGraph Ltd"
+LABEL maintainer="draw.io Ltd"
 
 RUN yum update -y && \
     yum install tar -y && \
